@@ -1,0 +1,6 @@
+{
+  "tasks": [
+    {"type": "log", "content": "hello, world!"},
+    {"type": "shell", "content": "ls -la"}
+  ]
+}

@@ -1,0 +1,29 @@
+Name: Sundial
+Version: 0.1.0
+Synopsis: A cron style daemon with support for IFTTT-like semantics.
+Authors: George Lesica <george@lesica.com>
+License: BSD-3-clause
+
+Description: A cron style daemon with support for IFTTT-like semantics.
+Homepage: https://github.com/glesica/sundial
+
+OASISFormat: 0.4
+BuildTools: ocamlbuild
+Plugins: META (0.4), DevFiles (0.4)
+
+Executable "sd"
+  Path: src
+  MainIs: sd.ml
+  CompiledObject: best
+  BuildDepends: sundial, unix
+
+Library "sundial"
+  Path: src
+  Modules: Sundial
+  BuildDepends: unix, yojson
+
+SourceRepository master
+  Type: git
+  Location: https://github.com/glesica/sundial.git
+  Branch: master
+  Browser: https://github.com/glesica/sundial
