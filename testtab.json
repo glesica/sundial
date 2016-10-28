@@ -1,6 +1,14 @@
 {
   "tasks": [
-    {"type": "log", "content": "hello, world!"},
-    {"type": "shell", "content": "ls -la"}
+    {
+      "type": "log",
+      "content": "hello, world!",
+      "schedule": ""
+    },
+    {
+      "type": "shell",
+      "content": "ls -la",
+      "schedule": ""
+    }
   ]
 }
