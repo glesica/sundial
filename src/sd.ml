@@ -4,6 +4,7 @@ open Sys
 let rec start_loop () =
   Sundial.read_tab "testtab.json"
   |> List.iter Sundial.run_task;
+  print_string (Sundial.current_time ());
   Unix.sleep 1;
   start_loop ()
 

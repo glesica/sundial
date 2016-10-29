@@ -1,4 +1,5 @@
 open Unix
+open Printf
 
 type task =
   | Shell_task of string
@@ -52,3 +53,12 @@ let read_tab filename =
     | invalid ->
       raise (Invalid_task invalid))
   ;;
+
+let current_time () =
+  let ct = localtime (gettimeofday ()) in
+  sprintf "%4d-%2d-%2d %2d:%2d"
+      (ct.tm_year + 1900)
+      (ct.tm_mon + 1)
+      ct.tm_mday
+      ct.tm_hour
+      ct.tm_min
