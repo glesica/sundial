@@ -1,10 +1,13 @@
-open Unix
 open Sys
+open Unix
+
+let rec run_loop tasks =
+  1
 
 let rec start_loop () =
-  Sundial.read_tab "testtab.json"
-  |> List.iter Sundial.run_task;
-  print_string (Sundial.current_time ());
+  Tasks.read_tab "testtab.json"
+  |> List.filter (Tasks.should_run (localtime (gettimeofday ())))
+  |> List.iter Tasks.run_task;
   Unix.sleep 1;
   start_loop ()
 

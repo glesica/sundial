@@ -1,14 +1,24 @@
 {
   "tasks": [
     {
-      "type": "log",
-      "content": "hello, world!",
-      "schedule": ""
+      "kind": "log",
+      "title": "hello",
+      "data": "hello, world!",
+      "yr": "*",
+      "mo": "*",
+      "day": "*",
+      "hr": "*",
+      "min": "*"
     },
     {
-      "type": "shell",
-      "content": "ls -la",
-      "schedule": ""
+      "kind": "shell",
+      "title": "ls",
+      "data": "ls -la",
+      "yr": "*",
+      "mo": "*",
+      "day": "*",
+      "hr": "*",
+      "min": "42"
     }
   ]
 }

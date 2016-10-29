@@ -15,11 +15,11 @@ Executable "sd"
   Path: src
   MainIs: sd.ml
   CompiledObject: best
-  BuildDepends: sundial, unix
+  BuildDepends: tasks, unix
 
-Library "sundial"
+Library "tasks"
   Path: src
-  Modules: Sundial
+  Modules: Tasks
   BuildDepends: unix, yojson
 
 SourceRepository master
