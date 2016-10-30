@@ -1,19 +1,25 @@
 open Sys
 open Unix
 
-let rec run_loop tasks =
-  1
+let await_next_run start_time =
+  Unix.sleep (90 - start_time.tm_sec)
 
-let rec start_loop () =
+
+let rec run_loop () =
+  let start_time = (localtime (time ())) in
   Tasks.read_tab "testtab.json"
-  |> List.filter (Tasks.should_run (localtime (gettimeofday ())))
+  |> List.filter (Tasks.should_run start_time)
   |> List.iter Tasks.run_task;
-  Unix.sleep 1;
-  start_loop ()
+  await_next_run start_time;
+  run_loop ()
+
+let start_up () =
+  await_next_run (Unix.localtime (Unix.time ()));
+  run_loop ()
 
 let shut_down status _ =
   exit status
 
 let main =
   set_signal sigint (Signal_handle (shut_down 101));
-  start_loop ()
+  start_up ()
