@@ -1,6 +1,20 @@
 # Sundial
 
+## Development
+
+I'm still learning OCaml, so I'm just doing what the Internet
+told me to do. Critiques welcome. For now, things are pretty
+simple.
+
+1. Install [OCaml >=4.02](https://ocaml.org/docs/install.html)
+2. Install [OPAM](https://opam.ocaml.org/doc/Install.html)
+3. `$ opam install yojson oasis merlin`
+4. `$ make`
+5. `./sd.native`
+
 ## Schedule a task
+
+See the file `testtab.json` for an example.
 
 The JSON version of a task looks like the following:
 
@@ -19,6 +33,17 @@ The JSON version of a task looks like the following:
 
 The task above will do a directory listing on the current working
 directory every hour at half past the hour.
+
+Right now, tasks are contained inside a JSON object under the
+"tasks" key, like so:
+
+```json
+{
+  "tasks": [
+    ...
+  ]
+}
+```
 
 The format for a schedule is `YYYY-MM-DD HH:MM`. Any of the fields
 may be replaced with a wildcard `*` to indicate that all values of
