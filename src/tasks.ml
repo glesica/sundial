@@ -56,8 +56,13 @@ let run_task {kind; data} =
     | Log ->
       print_endline data;
     | Shell ->
-      let _ = system data in
-      ()
+      let pid = Unix.fork () in
+      if pid = 0 then
+        let shell = "/bin/sh" in
+        let args = [|"-c"; (Printf.sprintf "'%s'" data)|] in
+        Unix.execv shell args
+      else
+        ()
 
 let task_from_json json =
   let open Yojson.Basic.Util in
