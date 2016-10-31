@@ -44,8 +44,8 @@ let freq_matches sched actual =
     | Some sched_vals -> List.mem actual sched_vals
 
 let should_run {tm_year; tm_mon; tm_mday; tm_hour; tm_min} {yr; mo; day; hr; min} =
-  let yr_match = freq_matches yr tm_year in
-  let mo_match = freq_matches mo tm_mon in
+  let yr_match = freq_matches yr (tm_year + 1900) in
+  let mo_match = freq_matches mo (tm_mon + 1) in
   let day_match = freq_matches day tm_mday in
   let hr_match = freq_matches hr tm_hour in
   let min_match = freq_matches min tm_min in
