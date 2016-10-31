@@ -11,9 +11,19 @@ OASISFormat: 0.4
 BuildTools: ocamlbuild
 Plugins: META (0.4), DevFiles (0.4)
 
-Executable "sd"
+SourceRepository master
+  Type: git
+  Location: https://github.com/glesica/sundial.git
+  Branch: master
+  Browser: https://github.com/glesica/sundial
+
+# ----------------------------------------------------------------------------
+# Application
+# ----------------------------------------------------------------------------
+
+Executable "sundial"
   Path: src
-  MainIs: sd.ml
+  MainIs: sundial.ml
   CompiledObject: best
   BuildDepends: tasks, unix
 
@@ -22,8 +32,17 @@ Library "tasks"
   Modules: Tasks
   BuildDepends: unix, yojson
 
-SourceRepository master
-  Type: git
-  Location: https://github.com/glesica/sundial.git
-  Branch: master
-  Browser: https://github.com/glesica/sundial
+# ----------------------------------------------------------------------------
+# Tests
+# ----------------------------------------------------------------------------
+
+Executable "sundial-tests"
+  Path: test
+  MainIs: tests.ml
+  CompiledObject: best
+  Build$: flag(tests)
+  BuildDepends: oUnit (>= 2.0.0), tasks
+
+Test "tests"
+  Type: custom (0.4)
+  Command: $sundial_tests
