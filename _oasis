@@ -2,7 +2,7 @@ Name: Sundial
 Version: 0.1.0
 Synopsis: A cron style daemon with support for IFTTT-like semantics.
 Authors: George Lesica <george@lesica.com>
-License: BSD-3-clause
+License: GPL-3
 
 Description: A cron style daemon with support for IFTTT-like semantics.
 Homepage: https://github.com/glesica/sundial
