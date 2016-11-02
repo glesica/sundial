@@ -2,7 +2,7 @@ open Sys
 open Unix
 
 let await_next_run start_time =
-  Unix.sleep (90 - start_time.tm_sec)
+  sleep (90 - start_time.tm_sec)
 
 
 let rec run_loop () =
@@ -14,12 +14,12 @@ let rec run_loop () =
   run_loop ()
 
 let start_up () =
-  await_next_run (Unix.localtime (Unix.time ()));
+  await_next_run (localtime (time ()));
   run_loop ()
 
 let shut_down status _ =
   exit status
 
 let main =
-  set_signal sigint (Signal_handle (shut_down 101));
+  set_signal sigint (Signal_handle (shut_down 0));
   start_up ()

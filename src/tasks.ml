@@ -56,11 +56,16 @@ let run_task {kind; data} =
     | Log ->
       print_endline data;
     | Shell ->
-      let pid = Unix.fork () in
+      let pid = fork () in
       if pid = 0 then
-        let shell = "/bin/sh" in
-        let args = [|"-c"; (Printf.sprintf "'%s'" data)|] in
-        Unix.execv shell args
+        let outlog = openfile "stdout.log"
+          [O_WRONLY; O_APPEND; O_CREAT] 0o640 in
+        let errlog = openfile "stderr.log"
+          [O_WRONLY; O_APPEND; O_CREAT] 0o640 in
+        dup2 outlog stdout;
+        dup2 errlog stderr;
+        let _ = system data in
+        exit 0
       else
         ()
 
