@@ -1,28 +1,28 @@
 open Unix
 
 type kind =
-  | Log
-  | Shell
+| Log
+| Shell
 
 exception Invalid_kind of string
 
 let kind_of_string kind_str =
   match (String.lowercase kind_str) with
-    | "log" -> Log
-    | "shell" -> Shell
-    | _ -> raise (Invalid_kind kind_str)
+  | "log" -> Log
+  | "shell" -> Shell
+  | _ -> raise (Invalid_kind kind_str)
 
 type freq =
-  | All
-  | One  of int
-  | Some of int list
+| All
+| One  of int
+| Some of int list
 
 exception Invalid_freq of string
 
 let freq_of_string freq_str =
   match freq_str with
-    | "*" -> All
-    | _ -> One (int_of_string freq_str)
+  | "*" -> All
+  | _ -> One (int_of_string freq_str)
 
 type task = {
   kind  : kind;
@@ -53,21 +53,20 @@ let should_run {tm_year; tm_mon; tm_mday; tm_hour; tm_min} {yr; mo; day; hr; min
 
 let run_task {kind; data} =
   match kind with
-    | Log ->
-      print_endline data;
-    | Shell ->
-      let pid = fork () in
-      if pid = 0 then
-        let outlog = openfile "stdout.log"
-          [O_WRONLY; O_APPEND; O_CREAT] 0o640 in
-        let errlog = openfile "stderr.log"
-          [O_WRONLY; O_APPEND; O_CREAT] 0o640 in
-        dup2 outlog stdout;
-        dup2 errlog stderr;
-        let _ = system data in
-        exit 0
-      else
-        ()
+  | Log ->
+    print_endline data;
+  | Shell ->
+    match fork () with
+    | 0 ->
+      let outlog = openfile "stdout.log"
+        [O_WRONLY; O_APPEND; O_CREAT] 0o640 in
+      let errlog = openfile "stderr.log"
+        [O_WRONLY; O_APPEND; O_CREAT] 0o640 in
+      dup2 outlog stdout;
+      dup2 errlog stderr;
+      execv "/bin/sh" [|"/bin/sh"; "-c"; (Printf.sprintf "%s" data)|]
+    | pid ->
+      ()
 
 let task_from_json json =
   let open Yojson.Basic.Util in
