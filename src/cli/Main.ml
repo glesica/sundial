@@ -1,3 +1,4 @@
+open Printf
 open Sys
 open Unix
 
@@ -7,7 +8,7 @@ let rec set_timer base_time =
     else 90 in
   (* TODO: Log if we missed a timer. *)
   ignore (alarm (offset - base_time.tm_sec));
-  sigsuspend [];
+  sigsuspend [sigchld];
   set_timer (localtime (time ()))
 
 let process_tasks _ =
@@ -16,10 +17,9 @@ let process_tasks _ =
   |> List.filter (Tasks.should_run start_time)
   |> List.iter Tasks.run_task
 
-let clean_up _ =
-  (* TODO: Should probably log as they are forked and awaited. *)
-  ignore (waitpid [WNOHANG] (0));
-  ()
+let clean_up pid =
+  try while fst (waitpid [WNOHANG] (-1)) > 0 do () done
+  with Unix_error (ECHILD, _, _) -> ()
 
 let shut_down status _ =
   exit status

@@ -22,14 +22,15 @@ SourceRepository master
 # ----------------------------------------------------------------------------
 
 Executable "sundial"
-  Path: src
-  MainIs: sundial.ml
+  Path: src/cli
+  MainIs: Main.ml
   CompiledObject: best
-  BuildDepends: tasks, unix
+  BuildDepends: sundial, unix
 
-Library "tasks"
-  Path: src
+Library "sundial"
+  Path: src/sundial
   Modules: Tasks
+  InternalModules: Logging
   BuildDepends: unix, yojson
 
 # ----------------------------------------------------------------------------
@@ -38,10 +39,10 @@ Library "tasks"
 
 Executable "sundial-tests"
   Path: test
-  MainIs: tests.ml
+  MainIs: TestsMain.ml
   CompiledObject: best
   Build$: flag(tests)
-  BuildDepends: oUnit (>= 2.0.0), tasks
+  BuildDepends: oUnit (>= 2.0.0), sundial
 
 Test "tests"
   Type: custom (0.4)

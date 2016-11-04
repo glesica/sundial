@@ -1,3 +1,4 @@
+open Printf
 open Unix
 
 type kind =
@@ -55,6 +56,7 @@ let run_task {kind; data} =
   match kind with
   | Log ->
     print_endline data;
+    Logging.logerr (sprintf "Ran task (log): %s" data)
   | Shell ->
     match fork () with
     | 0 ->
@@ -66,7 +68,7 @@ let run_task {kind; data} =
       dup2 errlog stderr;
       execv "/bin/sh" [|"/bin/sh"; "-c"; (Printf.sprintf "%s" data)|]
     | pid ->
-      ()
+      Logging.logerr (sprintf "Ran task (shell): %s (pid: %d)" data pid)
 
 let task_from_json json =
   let open Yojson.Basic.Util in
