@@ -30,7 +30,7 @@ Executable "sundial"
 Library "sundial"
   Path: src/sundial
   Modules: Tasks
-  InternalModules: Logging
+  InternalModules: Logging, Tabs
   BuildDepends: unix, yojson
 
 # ----------------------------------------------------------------------------
