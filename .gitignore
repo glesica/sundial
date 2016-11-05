@@ -10,3 +10,6 @@ setup.log
 *.swp
 .vscode/
 .idea/
+
+stdout.log
+stderr.log

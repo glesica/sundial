@@ -1,0 +1,34 @@
+1. crontab parser
+
+2. failure logging for tasks
+
+3. option parsing
+
+4. schedule display for tasks
+
+5. determine next run time for each task
+
+6. output all scheduled tasks
+
+7. support multiple users / running as root
+  1. change user for running tasks
+  2. search home directories for configs
+
+8. edit mode using EDITOR
+
+9. yaml (or yaml-like) configs?
+
+10. test run tasks by name
+
+11. daemonize
+
+12. other task types?
+
+13. ifttt semantics
+  1. only run if a script succeeds to start
+
+14. talk to a running instance through a socket
+
+15. new kinds of tasks?
+
+16. better logging system?
