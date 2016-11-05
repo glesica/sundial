@@ -2,21 +2,23 @@ open Printf
 open Sys
 open Unix
 
-let rec set_timer base_time =
-  let offset = if base_time.tm_sec < 30
-    then 30
-    else 90 in
-  (* TODO: Log if we missed a timer. *)
-  ignore (alarm (offset - base_time.tm_sec));
-  sigsuspend [sigchld];
-  set_timer (localtime (time ()))
+let next_wake base_epoch =
+  let base_time = localtime base_epoch in
+  let offset = float_of_int (90 - base_time.tm_sec) in
+  base_epoch +. offset
 
-let process_tasks _ =
-  let start_time = (localtime (time ())) in
-  Tasks.read_tab "testtab.json"
-  |> List.filter (Tasks.should_run start_time)
-  |> List.iter Tasks.run_task
-
+let rec process_loop wake_epoch =
+  let start_epoch = time () in
+  if wake_epoch -. start_epoch < 1.0 then
+    let start_time = localtime start_epoch in
+    Tasks.read_tab "testtab.json"
+    |> List.filter (Tasks.should_run start_time)
+    |> List.iter Tasks.run_task;
+    process_loop (next_wake start_epoch)
+  else
+    sleep (int_of_float (wake_epoch -. start_epoch));
+    process_loop wake_epoch
+  
 let clean_up pid =
   try while fst (waitpid [WNOHANG] (-1)) > 0 do () done
   with Unix_error (ECHILD, _, _) -> ()
@@ -25,10 +27,9 @@ let shut_down status _ =
   exit status
 
 let start_up () =
-  set_signal sigalrm (Signal_handle process_tasks);
   set_signal sigchld (Signal_handle clean_up);
   set_signal sigint (Signal_handle (shut_down 0));
-  set_timer (localtime (time ()))
+  process_loop (next_wake (time ()))
 
 let main =
   start_up ()
