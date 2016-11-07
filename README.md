@@ -6,7 +6,7 @@ I'm still learning OCaml, so I'm just doing what the Internet
 told me to do. Critiques welcome. For now, things are pretty
 simple.
 
-1. Install [OCaml >=4.02](https://ocaml.org/docs/install.html)
+1. Install [OCaml >=4.03](https://ocaml.org/docs/install.html)
 2. Install [OPAM](https://opam.ocaml.org/doc/Install.html)
 3. `./scripts/init.sh` to install dependencies
 4. `make` to build the program

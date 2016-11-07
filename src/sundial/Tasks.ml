@@ -8,7 +8,7 @@ type kind =
 exception Invalid_kind of string
 
 let kind_of_string kind_str =
-  match (String.lowercase kind_str) with
+  match (String.lowercase_ascii kind_str) with
   | "log" -> Log
   | "shell" -> Shell
   | _ -> raise (Invalid_kind kind_str)
