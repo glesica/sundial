@@ -1,6 +1,10 @@
+open Arg
 open Printf
 open Sys
 open Unix
+
+let arg_tab_path = ref ""
+let arg_run_title = ref ""
 
 let next_wake base_epoch =
   let base_time = localtime base_epoch in
@@ -26,12 +30,31 @@ let clean_up pid =
 let shut_down status _ =
   exit status
 
+let load_tab () =
+  let tab_path = try Tabs.get_first_tab_path !arg_tab_path with
+  | Not_found ->
+    Logging.logerr "No config file found";
+    exit 1 in
+  Tasks.read_tab tab_path
+
+let run_task_by_title title =
+  let tasks = load_tab () in
+  Tasks.run_task_by_title tasks title
+
 let start_up () =
   set_signal sigchld (Signal_handle clean_up);
   set_signal sigint (Signal_handle (shut_down 0));
-  let tab_path = Tabs.get_first_tab_path () in
-  let tab = Tasks.read_tab tab_path in
-  process_loop (next_wake (time ())) tab
+  let tasks = load_tab () in
+  process_loop (next_wake (time ())) tasks
 
 let main =
-  start_up ()
+  parse [
+      ("--tab", Set_string arg_tab_path, "Path to the config file.");
+      ("--run", Set_string arg_run_title, "Run a single task and exit.");
+    ]
+    (fun anon -> ())
+    "Sundial: sort of like cron?";
+  if !arg_run_title <> "" then
+    run_task_by_title !arg_run_title
+  else
+    start_up ()

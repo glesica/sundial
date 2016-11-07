@@ -47,14 +47,14 @@ let test_should_run ctx =
     tm_isdst = true;
   } in
   let tts yr mo day hr min = {
-    kind = Shell;
-    title = "title";
-    data = "ls";
-    yr = yr;
-    mo = mo;
-    day = day;
-    hr = hr;
-    min = min;
+    task_kind = Shell;
+    task_title = "title";
+    task_data = "ls";
+    task_yr = yr;
+    task_mo = mo;
+    task_day = day;
+    task_hr = hr;
+    task_min = min;
   } in
   assert_equal ~msg:"* * * * *"
     (should_run ts (tts All All All All All))

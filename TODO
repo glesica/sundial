@@ -2,7 +2,7 @@
 
 2. failure logging for tasks
 
-3. option parsing
+X 3. option parsing
 
 4. schedule display for tasks
 
@@ -32,3 +32,7 @@
 15. new kinds of tasks?
 
 16. better logging system?
+
+X 17. look in current user home directory
+
+X 18. look at system for default config
