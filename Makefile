@@ -7,10 +7,11 @@ PLAT = $(shell uname | tr [:upper:] [:lower:])
 GITREF = $(shell ./scripts/branch.sh)
 RELNAME = sundial-$(GITREF)-$(ARCH)-$(PLAT)
 RELDIR = _release/$(RELNAME)
+RELFILES = README.md LICENSE AUTHORS
 
 release: clean test
 	mkdir -p $(RELDIR)
-	cp README.md LICENSE $(RELDIR)/
+	cp $(RELFILES) $(RELDIR)/
 	cp Main.native $(RELDIR)/sundial
 	cd _release && tar cf $(RELNAME).tar.gz $(RELNAME)/
 	rm -rf $(RELDIR)
