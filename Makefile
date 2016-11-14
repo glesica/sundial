@@ -2,6 +2,22 @@ CONFIGUREFLAGS += --enable-tests
 
 default: test
 
+ARCH = $(shell uname -p)
+PLAT = $(shell uname | tr [:upper:] [:lower:])
+GITREF = $(shell ./scripts/branch.sh)
+RELNAME = sundial-$(GITREF)-$(ARCH)-$(PLAT)
+RELDIR = _release/$(RELNAME)
+
+release: clean test
+	mkdir -p $(RELDIR)
+	cp README.md LICENSE $(RELDIR)/
+	cp Main.native $(RELDIR)/sundial
+	cd _release && tar cf $(RELNAME).tar.gz $(RELNAME)/
+	rm -rf $(RELDIR)
+
+release-clean:
+	rm -rf _release
+
 # OASIS_START
 # DO NOT EDIT (digest: a3c674b4239234cbbe53afe090018954)
 
