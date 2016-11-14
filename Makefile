@@ -4,7 +4,7 @@ default: test
 
 ARCH = $(shell uname -p)
 PLAT = $(shell uname | tr [:upper:] [:lower:])
-GITREF = $(shell ./scripts/branch.sh)
+GITREF = $(shell git describe --tags)
 RELNAME = sundial-$(GITREF)-$(ARCH)-$(PLAT)
 RELDIR = _release/$(RELNAME)
 RELFILES = README.md LICENSE AUTHORS
