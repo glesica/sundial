@@ -22,9 +22,16 @@ let rec process_loop wake_epoch tab =
   else
     sleep (int_of_float (wake_epoch -. start_epoch));
     process_loop wake_epoch tab
-  
-let clean_up pid =
-  try while fst (waitpid [WNOHANG] (-1)) > 0 do () done
+
+let clean_up _ =
+  try let (pid, status) = (waitpid [WNOHANG] (-1)) in
+    match status with
+    | WEXITED code ->
+      Logging.logerr (sprintf "Process %d exited (status %d)" pid code)
+    | WSIGNALED signal ->
+      Logging.logerr (sprintf "Process %d killed (signal %d)" pid signal)
+    | WSTOPPED signal ->
+      Logging.logerr (sprintf "Process %d stopped (signal %d)" pid signal)
   with Unix_error (ECHILD, _, _) -> ()
 
 let shut_down status _ =

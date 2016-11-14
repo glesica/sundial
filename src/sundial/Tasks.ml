@@ -57,7 +57,7 @@ let run_task {task_kind; task_data} =
   match task_kind with
   | Log ->
     print_endline task_data;
-    Logging.logerr (sprintf "Ran task (log): %s" task_data)
+    Logging.logerr (sprintf "Logged (%s)" task_data)
   | Shell ->
     match fork () with
     | 0 ->
@@ -69,7 +69,7 @@ let run_task {task_kind; task_data} =
       dup2 errlog stderr;
       execv "/bin/sh" [|"/bin/sh"; "-c"; (Printf.sprintf "%s" task_data)|]
     | pid ->
-      Logging.logerr (sprintf "Ran task (shell): %s (pid: %d)" task_data pid)
+      Logging.logerr (sprintf "Process %d started (%s)" pid task_data)
 
 let run_task_by_title tasks title =
   let task = match List.filter
