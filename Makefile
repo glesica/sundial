@@ -2,6 +2,13 @@ CONFIGUREFLAGS += --enable-tests
 
 default: test
 
+VERSION = 4.03.0
+DEPS = oasis yojson merlin ounit ocamlfind
+
+init:
+	opam switch $(VERSION)
+	opam install $(DEPS)
+
 ARCH = $(shell uname -p)
 PLAT = $(shell uname | tr [:upper:] [:lower:])
 GITREF = $(shell git describe --tags)
@@ -18,6 +25,8 @@ release: clean test
 
 release-clean:
 	rm -rf _release
+
+.PHONY: init release release-clean
 
 # OASIS_START
 # DO NOT EDIT (digest: a3c674b4239234cbbe53afe090018954)

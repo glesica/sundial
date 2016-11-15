@@ -10,7 +10,7 @@ simple.
 
 1. Install [OCaml >=4.03](https://ocaml.org/docs/install.html)
 2. Install [OPAM](https://opam.ocaml.org/doc/Install.html)
-3. `./scripts/init.sh` to install dependencies
+3. `make init` to install development and build dependencies
 4. `make` to build the program
 5. `./Main.native` to run the program
 
